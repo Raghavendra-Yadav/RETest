@@ -19,13 +19,28 @@ try:
     # Get reference to 'expenses' collection
     collection = db.expenses
 
-    # inserting one expense
-    new_expense = {
-        "expense_logger": "Raghavendra Yadav",
-        "description": "Rent",
-        "amount": 375,
-        "last_updated": datetime.now(timezone.utc),
-    }
+    # inserting Many expense
+    new_expense = [
+        {
+            "expense_logger": "Ada Lovelace",
+            "description": "groceries",
+            "amount": 175,
+            "last_updated": datetime.now(timezone.utc),
+        },
+        {
+            "expense_holder": "al-Khwarizmi",
+            "description": "Gas",
+            "amount": 60,
+            "last_updated": datetime.now(timezone.utc),
+        },
+    ]
+
+    # Write an expression that inserts the 'new_account' document into the 'accounts' collection.
+    result = collection.insert_many(new_expense)
+
+    document_ids = result.inserted_ids
+    print("# of documents inserted: " + str(len(document_ids)))
+    print(f"_ids of inserted documents: {document_ids}")
 
     # Expression that inserts the 'new_expense' document into the 'expenses' collection.
     result = collection.insert_one(new_expense)
@@ -38,4 +53,3 @@ except Exception as e:
     print(e)
 finally:
     client.close()
-

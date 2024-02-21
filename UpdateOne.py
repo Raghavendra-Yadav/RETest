@@ -1,7 +1,8 @@
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from datetime import datetime, timezone
-import pprint 
+import pprint
+from bson import ObjectId 
 
 
 uri = "mongodb+srv://graghavendrayadav:Raghu@cluster0.gwjlwmk.mongodb.net/"
@@ -20,18 +21,20 @@ try:
     collection = db.expenses
 
     # inserting one expense
-    new_expense = {
-        "expense_logger": "Raghavendra Yadav",
-        "description": "Rent",
-        "amount": 375,
-        "last_updated": datetime.now(timezone.utc),
-    }
+    document_to_update = {"_id": ObjectId("65d661d1abf05836598556a0")}
 
-    # Expression that inserts the 'new_expense' document into the 'expenses' collection.
-    result = collection.insert_one(new_expense)
+    # Update
+    add_to_expense = {"$inc": {"amount": 130}}
 
-    document_id = result.inserted_id
-    pprint.pprint(f"_id of inserted document: {document_id}")
+    # Print original document
+    pprint.pprint(collection.find_one(document_to_update))
+
+    # Write an expression that adds to the target account balance by the specified amount.
+    result = collection.update_one(document_to_update, add_to_expense)
+    print("Documents updated: " + str(result.modified_count))
+
+    # Print updated document
+    pprint.pprint(collection.find_one(document_to_update))
 
 
 except Exception as e:

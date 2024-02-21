@@ -1,5 +1,6 @@
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+from bson.objectid import ObjectId
 from datetime import datetime, timezone
 import pprint 
 
@@ -19,19 +20,22 @@ try:
     # Get reference to 'expenses' collection
     collection = db.expenses
 
-    # inserting one expense
-    new_expense = {
-        "expense_logger": "Raghavendra Yadav",
-        "description": "Rent",
-        "amount": 375,
-        "last_updated": datetime.now(timezone.utc),
-    }
+    ids_to_find = [
+        ObjectId("65d66f3f3b8face7c98ec187"),
+        ObjectId("65d66f093720c762a1b7eb68"),
+        ObjectId("65d66a73f8baaf9a74cc5087"),
+    ]
 
-    # Expression that inserts the 'new_expense' document into the 'expenses' collection.
-    result = collection.insert_one(new_expense)
+    # Find documents with the specified IDs
+    found_documents = collection.find({"_id": {"$in": ids_to_find}})
 
-    document_id = result.inserted_id
-    pprint.pprint(f"_id of inserted document: {document_id}")
+    # Check if any documents were found
+    if found_documents:
+        for document in found_documents:
+            pprint.pprint(document)
+            print("---")
+    else:
+        print("No documents found with the specified IDs.")
 
 
 except Exception as e:
