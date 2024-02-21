@@ -21,9 +21,9 @@ try:
 
     # inserting one expense
     new_expense = {
-        "expense_logger": "Linus Torvalds",
+        "expense_logger": "Raghavendra Yadav",
         "description": "Rent",
-        "amount": 1000,
+        "amount": 375,
         "last_updated": datetime.now(timezone.utc),
     }
 

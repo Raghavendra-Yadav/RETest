@@ -1,5 +1,6 @@
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+from bson.objectid import ObjectId
 from datetime import datetime, timezone
 import pprint 
 
@@ -19,17 +20,22 @@ try:
     # Get reference to 'expenses' collection
     collection = db.expenses
 
-    documents_to_find = {"expense": {"$gt": 1000}}
+    ids_to_find = [
+        ObjectId("65d66f3f3b8face7c98ec187"),
+        ObjectId("65d66f093720c762a1b7eb68"),
+        ObjectId("65d66a73f8baaf9a74cc5087"),
+    ]
 
-    # Write an expression that selects the documents matching the query constraint in the 'accounts' collection.
-    cursor = collection.find(documents_to_find)
+    # Find documents with the specified IDs
+    found_documents = collection.find({"_id": {"$in": ids_to_find}})
 
-    num_docs = 0
-    for document in cursor:
-        num_docs += 1
-        pprint.pprint(document)
-        print()
-    print("# of documents found: " + str(num_docs))
+    # Check if any documents were found
+    if found_documents:
+        for document in found_documents:
+            pprint.pprint(document)
+            print("---")
+    else:
+        print("No documents found with the specified IDs.")
 
 
 except Exception as e:
