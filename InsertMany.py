@@ -29,8 +29,7 @@ try:
         },
         {
             "expense_holder": "al-Khwarizmi",
-            "description": "groceries",
-            "amount": "Gas",
+            "description": "Gas",
             "amount": 60,
             "last_updated": datetime.now(timezone.utc),
         },
